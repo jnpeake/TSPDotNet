@@ -9,10 +9,7 @@ using TSPDotNet.Domain;
 namespace TSPDotNet.AntColonyOptimisation.Test;
 public class AntTests
 {
-    [Fact]
-    public void GivenAntIsInitialized_DistanceMatrixIsCreated()
-    {
-        var exampleProblem = new Problem(
+    Problem exampleProblem = new Problem(
             Locations: new List<Location>
             {
                 new Location(51.5074, -0.1278),   // London
@@ -31,6 +28,9 @@ public class AntTests
             DistanceMetric: DistanceMetric.Haversine
         );
 
+    [Fact]
+    public void GivenAntIsInitialized_DistanceMatrixIsCreated()
+    {
         var ant = new Ant(exampleProblem);
 
         for (int i = 0; i < 10; i++)
@@ -44,6 +44,26 @@ public class AntTests
                 else
                 {
                     Assert.True(ant.DistanceMatrix[i, j] > 0);
+                }
+            }
+        }
+    }
+
+    [Fact]
+    public void GivenAntIsInitialized_PheromoneMatrixIsCreated()
+    {
+        var ant = new Ant(exampleProblem);
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                if (i == j)
+                {
+                    Assert.True(ant.PheromoneMatrix[i, j] == 0);
+                }
+                else
+                {
+                    Assert.True(ant.PheromoneMatrix[i, j] == 1d);
                 }
             }
         }

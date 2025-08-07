@@ -10,14 +10,14 @@ namespace TSPDotNet.AntColonyOptimisation.Service;
 public class Ant
 {
     private List<int> Route = new();
-    private double[,] pheromoneMatrix;
+    public double[,] PheromoneMatrix;
     public double[,] DistanceMatrix;
     public Problem _problem;
 
     public Ant(Problem problem)
     {
         _problem = problem;
-        pheromoneMatrix = InitialisePheromoneMatrix(problem.Locations.Count, 1);
+        PheromoneMatrix = InitialisePheromoneMatrix(problem.Locations.Count, 1);
         DistanceMatrix = InitialiseDistanceMatrix(problem);
     }
 
@@ -50,7 +50,15 @@ public class Ant
         {
             for(int j = 0; j < numCities; j++)
             {
-                matrix[i, j] = initialValue;
+                if (i == j)
+                {
+                    matrix[i, j] = 0;
+                }
+
+                else
+                {
+                    matrix[i, j] = initialValue;
+                }
             }
         }
 
