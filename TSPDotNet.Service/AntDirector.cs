@@ -5,6 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TSPDotNet.AntColonyOptimisation.Service;
-internal class AntDirector
+public class AntDirector
 {
 }
