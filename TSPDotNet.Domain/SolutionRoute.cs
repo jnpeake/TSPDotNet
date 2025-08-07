@@ -6,4 +6,9 @@ using System.Threading.Tasks;
 
 namespace TSPDotNet.Domain;
 
-public record SolutionRoute(List<int> route, decimal totalDistance);
+public class SolutionRoute
+{
+    public List<int> route { get; set; } = new List<int>();
+    public double totalDistance { get; set; }
+}
+

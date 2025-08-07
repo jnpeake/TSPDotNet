@@ -68,4 +68,15 @@ public class AntTests
             }
         }
     }
+
+    [Fact]
+    public void GivenSolveIsCalled_ValidSolutionIsReturned()
+    {
+        var ant = new Ant(exampleProblem);
+        var solution = ant.Solve();
+
+        Assert.True(solution.totalDistance > 0);
+        Assert.True(solution.route.Count == 10);
+        Assert.True(solution.route.Distinct().Count() == 10);
+    }
 }
