@@ -7,10 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSPDotNet.Api", "TSPDotNet.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSPDotNet.Domain", "TSPDotNet.Domain\TSPDotNet.Domain.csproj", "{149F38DC-D39C-4426-A000-2E7888FBBC93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSPDotNet.Service", "TSPDotNet.Service\TSPDotNet.Service.csproj", "{606F483B-DC8E-4AFF-9A9A-47BB9691C903}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSPDotNet.AntColonyOptimisation.Service", "TSPDotNet.Service\TSPDotNet.AntColonyOptimisation.Service.csproj", "{606F483B-DC8E-4AFF-9A9A-47BB9691C903}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.gitignore = .gitignore
 		readme.md = readme.md
 	EndProjectSection
