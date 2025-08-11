@@ -1,97 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TSPDotNet.Domain;
-using TSPDotNet.Domain.Calculators;
+﻿using TSPDotNet.Domain;
 
 namespace TSPDotNet.AntColonyOptimisation.Service;
 public class Ant
 {
-    private List<int> _route = new();
-    public double[,] PheromoneMatrix;
-    public double[,] DistanceMatrix;
+    public SolutionRoute Solution;
     private Problem _problem;
-    private IDistanceCalculator _distanceCalculator;
+    private readonly double[,] _distanceMatrix;
+    private readonly double[,] _pheromoneMatrix;
 
-    public Ant(Problem problem)
+    public Ant(Problem problem, double[,] distanceMatrix, double[,] pheromoneMatrix)
     {
         _problem = problem;
-        _distanceCalculator = GetCalculator(problem.DistanceMetric);
-        PheromoneMatrix = InitialisePheromoneMatrix(problem.Locations.Count, 1);
-        DistanceMatrix = InitialiseDistanceMatrix(problem);
+        _pheromoneMatrix = pheromoneMatrix;
+        _distanceMatrix = distanceMatrix;
     }
 
-    private IDistanceCalculator? GetCalculator(DistanceMetric distanceMetric)
-    {
-        return _problem.DistanceMetric switch
-        {
-            DistanceMetric.Haversine => new HaversineCalculator(),
-            _ => throw new NotImplementedException()
-        };
-    }
-
-    private double[,] InitialiseDistanceMatrix(Problem problem)
-    {
-        var numLocations = problem.Locations.Count;
-        var locations = problem.Locations;
-        var matrix = new double[problem.Locations.Count, problem.Locations.Count];
-
-        for (int i = 0; i < problem.Locations.Count; i++)
-        {
-            for(int j = 0; j < problem.Locations.Count; j++)
-            {
-                matrix[i, j] = _distanceCalculator.CalculateDistance(locations[i].latitude, locations[i].longitude, locations[j].latitude, locations[j].longitude);
-            }
-        }
-
-        return matrix;
-    }
-
-    private static double[,] InitialisePheromoneMatrix(int numCities, double initialValue)
-    {
-        var matrix = new double[numCities, numCities];
-
-        for(int i = 0; i < numCities; i++)
-        {
-            for(int j = 0; j < numCities; j++)
-            {
-                if (i == j)
-                {
-                    matrix[i, j] = double.MaxValue;
-                }
-
-                else
-                {
-                    matrix[i, j] = initialValue;
-                }
-            }
-        }
-
-        return matrix;
-    }
-
-    public SolutionRoute Solve()
+    public SolutionRoute Solve(int startIndex)
     {
         var numLocations = _problem.Locations.Count;
-        var currentLocation = _problem.StartIndex;
+        var currentLocation = startIndex;
         var visited = new HashSet<int>();
-        var solution = new SolutionRoute();
-        solution.route.Add(currentLocation);
+
+        Solution = new SolutionRoute();
+        Solution.route.Add(currentLocation);
         visited.Add(currentLocation);
 
         for(int i = 0; i < numLocations-1; i++)
         {
             (int, double) selectedLocation = SelectLocation(currentLocation, numLocations, visited);
             currentLocation = selectedLocation.Item1;
-            solution.route.Add(selectedLocation.Item1);
+            Solution.route.Add(selectedLocation.Item1);
             visited.Add(selectedLocation.Item1);
 
-            solution.totalDistance += selectedLocation.Item2;
+            Solution.totalDistance += selectedLocation.Item2;
         }
 
-        return solution;
+        return Solution;
 
     }
 
@@ -106,7 +50,7 @@ public class Ant
                 continue;
             }
 
-            var distanceTo = DistanceMatrix[currentLocation, i] * PheromoneMatrix[currentLocation, i];
+            var distanceTo = _distanceMatrix[currentLocation, i] * _pheromoneMatrix[currentLocation, i];
             if (distanceTo < shortestDistance)
             {
                 shortestDistance = distanceTo;
@@ -114,6 +58,6 @@ public class Ant
             }
         }
 
-        return (selectedLocation, shortestDistance);
+        return (selectedLocation, _distanceMatrix[currentLocation, selectedLocation]);
     }
 }

@@ -28,52 +28,24 @@ public class AntTests
             DistanceMetric: DistanceMetric.Haversine
         );
 
-    [Fact]
-    public void GivenAntIsInitialized_DistanceMatrixIsCreated()
-    {
-        var ant = new Ant(exampleProblem);
-
-        for (int i = 0; i < 10; i++)
-        {
-            for(int j = 0; j < 10; j++)
-            {
-                if (i == j)
-                {
-                    Assert.True(ant.DistanceMatrix[i, j] == 0);
-                }
-                else
-                {
-                    Assert.True(ant.DistanceMatrix[i, j] > 0);
-                }
-            }
-        }
-    }
-
-    [Fact]
-    public void GivenAntIsInitialized_PheromoneMatrixIsCreated()
-    {
-        var ant = new Ant(exampleProblem);
-        for (int i = 0; i < 10; i++)
-        {
-            for (int j = 0; j < 10; j++)
-            {
-                if (i == j)
-                {
-                    Assert.True(ant.PheromoneMatrix[i, j] == 0);
-                }
-                else
-                {
-                    Assert.True(ant.PheromoneMatrix[i, j] == 1d);
-                }
-            }
-        }
-    }
+   
 
     [Fact]
     public void GivenSolveIsCalled_ValidSolutionIsReturned()
     {
-        var ant = new Ant(exampleProblem);
-        var solution = ant.Solve();
+        var numLocations = exampleProblem.Locations.Count;
+        var distanceMatrix = new double[numLocations,numLocations];
+        for (int i = 0; i < numLocations; i++)
+        {
+            for (int j = 0; j < numLocations; j++)
+            {
+                distanceMatrix[i, j] = 1;
+            }
+        }
+        var pheromoneMatrix = new double[numLocations, numLocations];
+
+        var ant = new Ant(exampleProblem, distanceMatrix, pheromoneMatrix);
+        var solution = ant.Solve(0);
 
         Assert.True(solution.totalDistance > 0);
         Assert.True(solution.route.Count == 10);
