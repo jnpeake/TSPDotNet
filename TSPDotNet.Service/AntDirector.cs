@@ -106,7 +106,7 @@ public class AntDirector
         {
             for (int j = 0; j < problem.Locations.Count; j++)
             {
-                matrix[i, j] = distanceCalculator.CalculateDistance(locations[i].latitude, locations[i].longitude, locations[j].latitude, locations[j].longitude);
+                matrix[i, j] = distanceCalculator.CalculateDistance(locations[i].x, locations[i].y, locations[j].x, locations[j].y);
             }
         }
 
@@ -134,6 +134,7 @@ public class AntDirector
         return distanceMetric switch
         {
             DistanceMetric.Haversine => new HaversineCalculator(),
+            DistanceMetric.Euclidean => new EuclideanCalculator(),
             _ => throw new NotImplementedException()
         };
     }

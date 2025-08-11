@@ -7,5 +7,6 @@ using System.Threading.Tasks;
 namespace TSPDotNet.Domain;
 public enum DistanceMetric
 {
-    Haversine
+    Haversine,
+    Euclidean
 }
