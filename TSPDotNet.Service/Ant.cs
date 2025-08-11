@@ -5,14 +5,16 @@ public class Ant
 {
     public SolutionRoute Solution;
     private Problem _problem;
+    private Random _random;
     private readonly double[,] _distanceMatrix;
     private readonly double[,] _pheromoneMatrix;
 
-    public Ant(Problem problem, double[,] distanceMatrix, double[,] pheromoneMatrix)
+    public Ant(Problem problem, double[,] distanceMatrix, double[,] pheromoneMatrix, Random random)
     {
         _problem = problem;
         _pheromoneMatrix = pheromoneMatrix;
         _distanceMatrix = distanceMatrix;
+        _random = random;
     }
 
     public SolutionRoute Solve(int startIndex)
@@ -50,7 +52,7 @@ public class Ant
                 continue;
             }
 
-            var distanceTo = _distanceMatrix[currentLocation, i] * _pheromoneMatrix[currentLocation, i];
+            var distanceTo = _distanceMatrix[currentLocation, i] * _pheromoneMatrix[currentLocation, i] * _random.NextDouble();
             if (distanceTo < shortestDistance)
             {
                 shortestDistance = distanceTo;

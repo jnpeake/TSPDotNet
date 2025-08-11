@@ -44,7 +44,7 @@ public class AntTests
         }
         var pheromoneMatrix = new double[numLocations, numLocations];
 
-        var ant = new Ant(exampleProblem, distanceMatrix, pheromoneMatrix);
+        var ant = new Ant(exampleProblem, distanceMatrix, pheromoneMatrix, new Random());
         var solution = ant.Solve(0);
 
         Assert.True(solution.totalDistance > 0);

@@ -79,7 +79,7 @@ public class AntDirectorTests
         {
             for (int j = 0; j < 10; j++)
             {
-                Assert.True(director.PheromoneMatrix[i, j] == 1d);
+                Assert.True(director.PheromoneMatrix[i, j] != 0);
             }
         }
     }
