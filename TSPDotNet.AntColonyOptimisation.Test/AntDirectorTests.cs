@@ -28,7 +28,7 @@ public class AntDirectorTests
     public void GivenSolveMethodCalled_SolutionObjectReturned()
     {
         var director = new AntDirector();
-        var result = director.SolveProblem(exampleProblem, 12, 10, null, null);
+        var result = director.SolveProblem(exampleProblem, 12, 10, null, null, 1, 1, 0.95);
 
         Assert.IsType<SolutionRoute>(result);
     }
@@ -41,7 +41,7 @@ public class AntDirectorTests
     public void GivenStartCityProvided_SolutionStartsAtSpecifiedCity(int startCity)
     {
         var director = new AntDirector();
-        var result = director.SolveProblem(exampleProblem, 12, 10, startCity, null);
+        var result = director.SolveProblem(exampleProblem, 12, 10, startCity, null, 1, 1, 0.95);
 
         Assert.Equal(startCity, result.route.First());
     }
@@ -50,7 +50,7 @@ public class AntDirectorTests
     public void GivenSolveMethodCalled_DistanceMatrixIsCreated()
     {
         var director = new AntDirector();
-        director.SolveProblem(exampleProblem, 12, 10, null, null);
+        director.SolveProblem(exampleProblem, 12, 10, null, null, 1, 1, 0.95);
 
 
         for (int i = 0; i < 10; i++)
@@ -73,7 +73,7 @@ public class AntDirectorTests
     public void GivenSolveMethodCalled_PheromoneMatrixIsCreated()
     {
         var director = new AntDirector();
-        director.SolveProblem(exampleProblem, 12, 10, null, null);
+        director.SolveProblem(exampleProblem, 12, 10, null, null, 1, 1, 0.95);
 
         for (int i = 0; i < 10; i++)
         {

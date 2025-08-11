@@ -8,7 +8,7 @@ public class AntDirector
     public double[,] DistanceMatrix;
 
 
-    public SolutionRoute SolveProblem(Problem problem, int numAnts, int numIterations, int? startIndex, int? seed)
+    public SolutionRoute SolveProblem(Problem problem, int numAnts, int numIterations, int? startIndex, int? seed, double alpha, double beta, double rho)
     {
         var ants = new Ant[numAnts];
         var randomProvider = seed == null ? new Random() : new Random(seed.Value);
@@ -21,7 +21,7 @@ public class AntDirector
 
         for(int i = 0; i < numIterations; i++)
         {
-            var solution = Iterate(problem, numAnts, startIndex, ants, randomProvider, startCity);
+            var solution = Iterate(problem, numAnts, startIndex, ants, randomProvider, startCity, alpha, beta, rho);
 
             if(solution.totalDistance <  bestSolution.totalDistance)
             {
@@ -32,11 +32,11 @@ public class AntDirector
         return bestSolution;
     }
 
-    private SolutionRoute Iterate(Problem problem, int numAnts, int? startIndex, Ant[] ants, Random randomProvider, int startCity)
+    private SolutionRoute Iterate(Problem problem, int numAnts, int? startIndex, Ant[] ants, Random randomProvider, int startCity, double alpha, double beta, double rho)
     {
         for (int j = 0; j < numAnts; j++)
         {
-            ants[j] = new Ant(problem, DistanceMatrix, PheromoneMatrix, randomProvider);
+            ants[j] = new Ant(problem, DistanceMatrix, PheromoneMatrix, randomProvider, alpha, beta);
         }
 
         foreach (var ant in ants)
@@ -47,7 +47,7 @@ public class AntDirector
         var bestAnt = GetBestAnt(ants);
 
         DepositPheromone(bestAnt.Solution, problem.Locations.Count);
-        EvaporatePheromone(problem.Locations.Count);
+        EvaporatePheromone(problem.Locations.Count, rho);
 
         return bestAnt.Solution;
     }
@@ -68,13 +68,13 @@ public class AntDirector
         PheromoneMatrix[finalLocation, firstLocation] += pheromoneAmount;
     }
 
-    private void EvaporatePheromone(int numLocations)
+    private void EvaporatePheromone(int numLocations, double rho)
     {
         for (int i = 0; i < numLocations; i++)
         {
             for (int j = 0; j < numLocations; j++)
             {
-                PheromoneMatrix[i, j] *= 0.95;
+                PheromoneMatrix[i, j] *= rho;
             }
         }
     }
