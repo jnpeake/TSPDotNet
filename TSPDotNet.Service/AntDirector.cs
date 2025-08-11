@@ -1,4 +1,5 @@
-﻿using TSPDotNet.Domain;
+﻿using System.Diagnostics;
+using TSPDotNet.Domain;
 using TSPDotNet.Domain.Calculators;
 
 namespace TSPDotNet.AntColonyOptimisation.Service;
@@ -39,9 +40,9 @@ public class AntDirector
             ants[j] = new Ant(problem, DistanceMatrix, PheromoneMatrix, randomProvider, alpha, beta);
         }
 
-        foreach (var ant in ants)
+        for (int j = 0; j < numAnts; j++)
         {
-            ant.Solve(startIndex ?? randomProvider.Next(startCity));
+            ants[j].Solve(startIndex ?? randomProvider.Next(startCity));
         }
 
         var bestAnt = GetBestAnt(ants);

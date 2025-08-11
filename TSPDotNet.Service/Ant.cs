@@ -41,6 +41,8 @@ public class Ant
             Solution.totalDistance += selectedLocation.Item2;
         }
 
+        Solution.totalDistance += _distanceMatrix[Solution.route[numLocations - 1], Solution.route[0]];
+
         return Solution;
 
     }
